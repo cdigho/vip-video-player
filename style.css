@@ -1,3 +1,8 @@
+@font-face {
+  font-family: ysbty;
+  src: url('./fonts/优设标题圆.otf');
+}
+
 html {
   font-family: "SF Pro SC","SF Pro Display","SF Pro Icons","PingFang SC","Helvetica Neue","Helvetica","Arial",sans-serif;
   -webkit-user-select: none;
@@ -5,6 +10,7 @@ html {
 }
 
 :root {
+  --title-color: #2d2d2d;
   --link-color: #ffb5af;
   --theme-color: #ffdbd8;
   --shadow-right-bottom-color: #d99a95;
@@ -31,14 +37,16 @@ body {
   justify-content: center;
   align-items: center;
   perspective: 1200px;
-  background-color: var(--theme-color);
+  background: url('./assets/cat-foots.svg'), url('./assets/cat-foots-rotate.svg'), var(--theme-color);
+  background-repeat: repeat-x, repeat-x, no-repeat;
+  background-position: top, bottom, center;
 }
 
 .card {
   position: relative;
   transform-style: preserve-3d;
-  width: 300px;
-  height: 450px;
+  width: 650px;
+  height: 300px;
   border-radius: 30px;
   box-shadow:  20px 20px 60px var(--shadow-right-bottom-color), 
               -20px -20px 60px var(--shadow-left-top-color);
@@ -70,6 +78,7 @@ body {
 
 .card-front {
   position: absolute;
+  justify-content: center;
 }
 
 .card-back {
@@ -77,79 +86,77 @@ body {
   transform: rotateY(180deg);
 }
 
-.card-front img {
-  width: 100%;
+.turn-to-back .card-front {
+  visibility: hidden;
 }
 
-.card-front .desc {
-  width: 80%;
-  padding: 40px 0;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.card-front .desc .text {
-  font-size: 20px;
-  color: var(--shadow-right-bottom-color);
-}
-
-.card-front .desc .link {
-  font-size: 12px;
+.card-front .title {
+  font-size: 28px;
+  font-family: ysbty;
+  line-height: 36px;
+  margin-bottom: 25px;
+  color: var(--title-color);
+  text-shadow: 1px 1px 0px rgba(255, 138, 0, 0.254944);
 }
 
 .card-front form {
-  flex: 1;
+  position: relative;
   width: 60%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
+}
+
+.card-front form:hover .cat {
+  transform: translateX(-110%);
+}
+
+.card-front form .cat {
+  position: absolute;
+  bottom: 0;
+  transform: translateX(-50%);
+  transition: .3s ease-in-out;
 }
 
 .card-front form #media-url {
-  line-height: 30px;
+  width: 100%;
+  height: 44px;
   outline: none;
   padding-left: 20px;
   border: 0;
   border-radius: 25px;
+  border: 2px solid #E14828;
   font-size: 12px;
+  text-align: center;
   box-sizing: border-box;
   box-shadow: inset 2px 2px 4px var(--input-left-top-color), 
               inset -2px -2px 4px var(--input-right-bottom-color);
+}
+
+.card-front form #media-url::placeholder {
+  text-align: center;
 }
 
 .card-front form #media-url:hover {
   background: linear-gradient(145deg, #e6e6e6, #ffffff);
 }
 
-.card-front form .apis {
-  width: 100%;
-  line-height: 30px;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  color: var(--shadow-right-bottom-color);
-}
-
 .card-front form .play {
-  width: 40%;
-  line-height: 30px;
-  align-self: flex-end;
-  outline: none;
-  border: 0;
-  border-radius: 25px;
-  background: linear-gradient(145deg, #838383, #6e6e6e);
-  box-shadow:  2px 2px 8px #686868, 
-                -2px -2px 8px #8c8c8c;
-  color: #fff;
-  font-size: 14px;
-  cursor: pointer;
+  /* remove button default css style */
+  background: none;
+  border: none;
+  margin: 0;
+  padding: 0;
+
+  position: absolute;
+  top: 0;
+  right: 0;
+  transition: .6s ease-in-out;
 }
 
 .card-front form .play:hover {
-  background: #7a7a7a;
+  transform: scale(1.05);
+}
+
+.card-front form .play .ball {
+  cursor: pointer;
 }
 
 .card-front form .play:active {
@@ -206,6 +213,8 @@ body {
   box-shadow: inset 2px 2px 4px var(--shadow-right-bottom-color), 
             inset -2px -2px 4px var(--shadow-left-top-color);
 }
+
+/* 页脚 */
 
 .copyright {
   position: fixed;
@@ -287,6 +296,152 @@ body {
   z-index: 100;
 }
 
+/* 促销 */
+.promotion {
+  visibility: hidden;
+  opacity: 0;
+  transition: .3s;
+  
+  position: fixed;
+  top: 50%;
+  left: 50px;
+  transform: translateY(-50%);
+  padding: 12px;
+  background-color: #fff;
+  border-radius: 24px;
+}
+.promotion.show {
+  visibility: visible;
+  opacity: 1;
+}
+.promotion-poster {
+  position: relative;
+
+  width: 160px;
+  height: 160px;
+  background-color: lightblue;
+  border-radius: 16px;
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.promotion-poster span {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  padding: 6px 14px;
+  background-color: rgba(255, 255, 255, .8);
+  border-radius: 6px;
+  color: var(--link-color);
+  font-size: 14px;
+  font-weight: bold;
+}
+.promotion-poster img {
+  width: 90%;
+}
+.promotion-body {
+  margin: 10px 0;
+}
+.promotion-body .title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.promotion-body .title h3 {
+  font-size: 12px;
+  font-weight: bolder;
+  margin: 0;
+}
+.promotion-body .title svg {
+  cursor: pointer;
+}
+.promotion-body span {
+  color: grey;
+  font-size: 10px;
+}
+.promotion-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 4px 0;
+}
+.promotion-footer span {
+  font-size: 12px;
+  font-weight: bolder;
+  color: var(--link-color);
+}
+.promotion-footer a {
+  display: inline-block;
+  text-align: center;
+  width: 34px;
+  height: 34px;
+  line-height: 34px;
+  background-color: var(--theme-color);
+  color: var(--link-color);
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+}
+.promotion .red-pockets {
+  border-top: 1px solid var(--theme-color);
+  margin-top: 14px;
+  padding-top: 10px;
+  display: flex;
+  justify-content: space-around;
+}
+.promotion .red-pockets.hidden {
+  display: none;
+}
+.promotion .red-pockets a {
+  padding: 2px 8px;
+  text-align: center;
+  font-size: 12px;
+  height: 26px;
+  line-height: 26px;
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+}
+.promotion .red-pockets a.hidden {
+  display: none;
+}
+.promotion .red-pockets .taobao {
+  background-color: #f40;
+}
+.promotion .red-pockets .jd {
+  background-color: #c81623;
+}
+#promotion-qr {
+  width: 300px;
+  height: 260px;
+  padding: 30px;
+  border: none;
+  border-radius: 20px;
+  text-align: center;
+}
+#promotion-qr button {
+  display: block;
+  margin: 0 auto;
+  line-height: 28px;
+  border: none;
+  cursor: pointer;
+  border-radius: 10px;
+  background-color: lightblue;
+  font-size: 14px;
+}
+
+/* 手机屏幕 */
+@media screen and (max-width: 768px) {
+  .card {
+    width: 300px;
+    height: 350px;
+  }
+  .card-front form .play {
+    right: -54px;
+  }
+}
 
 /* 横向时画面比例 */
 
@@ -332,7 +487,7 @@ body {
 /* iPad及以上 & 横屏*/
 @media screen and (min-width: 927px) {
   .card.turn-to-back {
-    height: 85vh;
+    height: 90vh;
   }
 
   .copyright .cprt {
@@ -357,9 +512,17 @@ body {
   }
 }
 
+/* iPad mini 以下尺寸不显示promotion */
+@media screen and (max-width: 768px) {
+  .promotion {
+    display: none;
+  }
+}
+
 /* dark mode */
 @media (prefers-color-scheme: dark) {
   :root {
+    --title-color: rgb(232, 232, 232);
     --link-color: #999999;
     --theme-color: #000000;
     --shadow-right-bottom-color: #0f0f0f;
@@ -373,16 +536,6 @@ body {
     background-color: #1a1a1d;
   }
 
-  .card-front img {
-    opacity: .8;
-  }
-
-  .turn-to-back .card-front img {
-    opacity: 1;
-  }
-
-  .card-front .desc .text,
-  .card-front form .apis,
   .card-front form #media-url {
     color: #d7d7d7;
   }
@@ -393,11 +546,6 @@ body {
 
   .card-front form #media-url:hover {
     background: linear-gradient(145deg, #737373, #898989);
-  }
-
-  .card-front form .play {
-    background: #E43F5A;
-    box-shadow: none;
   }
 
   .copyright .author-link {
